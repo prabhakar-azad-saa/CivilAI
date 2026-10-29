@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { ZoomIn, ZoomOut, Maximize2, Download, Layers, Compass, Eye, EyeOff } from 'lucide-react';
+import { ZoomIn, ZoomOut, Maximize2, Download, Layers, Compass, Eye, EyeOff, Box } from 'lucide-react';
 import { DesignConcept, RoomScheduleItem } from '../../types/design';
 import { MockExportService } from '../../services/mockExportService';
 
@@ -7,12 +7,14 @@ interface SvgFloorPlanProps {
   design: DesignConcept;
   activeFloor?: 'Ground Floor' | 'First Floor';
   onFloorChange?: (floor: 'Ground Floor' | 'First Floor') => void;
+  onNavigateTo3D?: () => void;
 }
 
 export const SvgFloorPlan: React.FC<SvgFloorPlanProps> = ({
   design,
   activeFloor: controlledFloor,
-  onFloorChange
+  onFloorChange,
+  onNavigateTo3D
 }) => {
   const [internalFloor, setInternalFloor] = useState<'Ground Floor' | 'First Floor'>('Ground Floor');
   const floor = controlledFloor ?? internalFloor;
@@ -103,6 +105,17 @@ export const SvgFloorPlan: React.FC<SvgFloorPlanProps> = ({
             <span>Vastu Zones</span>
           </button>
         </div>
+
+        {/* Switch to 3D Cutaway Plan Button */}
+        {onNavigateTo3D && (
+          <button
+            onClick={onNavigateTo3D}
+            className="px-3 py-1.5 rounded-lg bg-olive-700 hover:bg-olive-800 text-white font-semibold flex items-center gap-1.5 shadow-sm transition-all"
+          >
+            <Box className="w-3.5 h-3.5 text-amber-300" />
+            <span>HD 3D Cutaway Plan →</span>
+          </button>
+        )}
 
         {/* Zoom & Export Controls */}
         <div className="flex items-center gap-1.5 ml-auto">

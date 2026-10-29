@@ -42,6 +42,16 @@ export interface CostEstimate {
   exclusions: string[];
 }
 
+export interface RenderImageItem {
+  id: string;
+  title: string;
+  category: '3d-cutaway' | 'split-sync' | 'exterior-3d' | '2d-blueprint' | 'interior' | 'user-upload';
+  url: string;
+  caption: string;
+  uploadedAt?: string;
+  roomTags?: string[];
+}
+
 export interface DesignConcept {
   id: string;
   projectId: string;
@@ -52,7 +62,11 @@ export interface DesignConcept {
   architecturalStyle: string;
   coverImage: string;
   backupImage: string;
+  isometricCutawayImage?: string;
+  blueprint2dImage?: string;
+  splitSyncImage?: string;
   galleryImages: string[];
+  renderGallery?: RenderImageItem[];
   floorsCount: number;
   floorsLabel: string;
   builtUpAreaSqFt: number;

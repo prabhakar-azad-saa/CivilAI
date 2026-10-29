@@ -55,10 +55,58 @@ export const SAMPLE_DESIGNS: DesignConcept[] = [
     architecturalStyle: 'Modern Biophilic',
     coverImage: 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1200&q=80',
     backupImage: 'https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&w=1200&q=80',
+    isometricCutawayImage: '/renders/concept-a-cutaway.jpg',
+    splitSyncImage: '/renders/concept-a-split.png',
+    blueprint2dImage: '/renders/sample-2d-cad.jpg',
     galleryImages: [
+      '/renders/concept-a-cutaway.jpg',
+      '/renders/concept-a-split.png',
+      '/renders/sample-2d-cad.jpg',
       'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1000&q=80',
       'https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?auto=format&fit=crop&w=1000&q=80',
       'https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?auto=format&fit=crop&w=1000&q=80'
+    ],
+    renderGallery: [
+      {
+        id: 'rg-a-1',
+        title: '3D Isometric Top Cutaway (Furnished Floor Plan)',
+        category: '3d-cutaway',
+        url: '/renders/concept-a-cutaway.jpg',
+        caption: 'High-definition 3D cutaway showing Master Bedroom, Guest Room, Open Island Kitchen, Living Lounge, Dining Table and Landscaped Terraces with real furniture scale.',
+        roomTags: ['Master Bed', 'Island Kitchen', 'Living Room', 'Dining', 'Terrace Balcony']
+      },
+      {
+        id: 'rg-a-2',
+        title: 'Split-Screen 2D Blueprint + 3D BIM Sync',
+        category: 'split-sync',
+        url: '/renders/concept-a-split.png',
+        caption: 'Dual architectural perspective showing precision 2D CAD engineering layout on the left aligned with real-time 3D rendered villa facade and parking bays on the right.',
+        roomTags: ['2D CAD Plan', '3D Exterior Render', 'Driveway & Carport']
+      },
+      {
+        id: 'rg-a-3',
+        title: 'Technical 2D CAD Floor Plan Blueprint',
+        category: '2d-blueprint',
+        url: '/renders/sample-2d-cad.jpg',
+        caption: 'Civil engineering structural layout drawing showing wall thicknesses, door swings, dimension strings, and room zoning.',
+        roomTags: ['Dimensions', 'Room Schedule', 'Door Swings']
+      },
+      {
+        id: 'rg-a-4',
+        title: 'Exterior Architecture Elevation & Facade',
+        category: 'exterior-3d',
+        url: 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1000&q=80',
+        caption: 'Contemporary villa exterior featuring warm wood screens, travertine accents, and cantilever shade pergola.',
+        roomTags: ['Elevation', 'Cantilever', 'Landscape']
+      },
+      {
+        id: 'rg-a-5',
+        title: 'Living Room & Internal Courtyard View',
+        category: 'interior',
+        url: 'https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?auto=format&fit=crop&w=1000&q=80',
+        caption: 'Light-flooded central living room opening directly to the biophilic green court.',
+        roomTags: ['Living', 'Atrium Courtyard']
+      }
     ],
     floorsCount: 2,
     floorsLabel: 'Ground + 1 Floor + Rooftop Pergola',
@@ -137,10 +185,50 @@ export const SAMPLE_DESIGNS: DesignConcept[] = [
     architecturalStyle: 'Contemporary Modernist',
     coverImage: 'https://images.unsplash.com/photo-1613490493576-7fde63acd811?auto=format&fit=crop&w=1200&q=80',
     backupImage: 'https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&w=1200&q=80',
+    isometricCutawayImage: '/renders/concept-b-cutaway.jpg',
+    splitSyncImage: '/renders/concept-a-split.png',
+    blueprint2dImage: '/renders/sample-2d-cad.jpg',
     galleryImages: [
+      '/renders/concept-b-cutaway.jpg',
+      '/renders/concept-a-split.png',
+      '/renders/sample-2d-cad.jpg',
       'https://images.unsplash.com/photo-1613490493576-7fde63acd811?auto=format&fit=crop&w=1000&q=80',
       'https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?auto=format&fit=crop&w=1000&q=80',
       'https://images.unsplash.com/photo-1600585152220-90363fe7e115?auto=format&fit=crop&w=1000&q=80'
+    ],
+    renderGallery: [
+      {
+        id: 'rg-b-1',
+        title: '3D Luxury Villa Cutaway (Top Isometric)',
+        category: '3d-cutaway',
+        url: '/renders/concept-b-cutaway.jpg',
+        caption: 'High-definition 3D cutaway showcasing Master Suite with walk-in closet, Chef Kitchen island, L-shaped living lounge and expansive timber outdoor balcony.',
+        roomTags: ['Master Bedroom', 'Island Kitchen', 'Living Room', 'Walk-in Wardrobe', 'Deck Balcony']
+      },
+      {
+        id: 'rg-b-2',
+        title: 'Split-Screen 2D Blueprint + 3D BIM Sync',
+        category: 'split-sync',
+        url: '/renders/concept-a-split.png',
+        caption: 'CAD blueprint synchronized with photorealistic 3D villa elevation & double carport.',
+        roomTags: ['2D CAD Plan', '3D Exterior Render', 'Double Carport']
+      },
+      {
+        id: 'rg-b-3',
+        title: 'Technical 2D CAD Floor Plan Blueprint',
+        category: '2d-blueprint',
+        url: '/renders/sample-2d-cad.jpg',
+        caption: 'Dimensioned structural floor plan with door swings and room dimensions.',
+        roomTags: ['CAD Blueprint', 'Dimensions', 'Zoning']
+      },
+      {
+        id: 'rg-b-4',
+        title: 'Modernist Facade & Cantilever Deck',
+        category: 'exterior-3d',
+        url: 'https://images.unsplash.com/photo-1613490493576-7fde63acd811?auto=format&fit=crop&w=1000&q=80',
+        caption: 'Deep cantilever overhangs with expansive acoustic double-glazing.',
+        roomTags: ['Exterior', 'Cantilever', 'Glazing']
+      }
     ],
     floorsCount: 2,
     floorsLabel: 'Ground + 1 Floor + Sky Lounge Deck',
@@ -218,10 +306,50 @@ export const SAMPLE_DESIGNS: DesignConcept[] = [
     architecturalStyle: 'Minimalist Contemporary',
     coverImage: 'https://images.unsplash.com/photo-1600585154526-990dced4db0d?auto=format&fit=crop&w=1200&q=80',
     backupImage: 'https://images.unsplash.com/photo-1600565193348-f74bd3c7ccdf?auto=format&fit=crop&w=1200&q=80',
+    isometricCutawayImage: '/renders/concept-c-cutaway.jpg',
+    splitSyncImage: '/renders/concept-a-split.png',
+    blueprint2dImage: '/renders/sample-2d-cad.jpg',
     galleryImages: [
+      '/renders/concept-c-cutaway.jpg',
+      '/renders/concept-a-split.png',
+      '/renders/sample-2d-cad.jpg',
       'https://images.unsplash.com/photo-1600585154526-990dced4db0d?auto=format&fit=crop&w=1000&q=80',
       'https://images.unsplash.com/photo-1600566753376-12c8ab7fb75b?auto=format&fit=crop&w=1000&q=80',
       'https://images.unsplash.com/photo-1600585152220-90363fe7e115?auto=format&fit=crop&w=1000&q=80'
+    ],
+    renderGallery: [
+      {
+        id: 'rg-c-1',
+        title: '3D Compact Urban Cutaway (Top View)',
+        category: '3d-cutaway',
+        url: '/renders/concept-c-cutaway.jpg',
+        caption: 'High-definition 3D cutaway of urban apartment layout with light oak wood floors, modern kitchen breakfast bar, two bedrooms, and glass balcony.',
+        roomTags: ['Urban Living', 'Two Bedrooms', 'Oak Flooring', 'Open Kitchen', 'Balcony']
+      },
+      {
+        id: 'rg-c-2',
+        title: 'Split-Screen 2D Blueprint + 3D BIM Sync',
+        category: 'split-sync',
+        url: '/renders/concept-a-split.png',
+        caption: 'Side-by-side CAD blueprint synchronized with 3D architectural villa render.',
+        roomTags: ['2D Blueprint', '3D Model', 'Synchronized']
+      },
+      {
+        id: 'rg-c-3',
+        title: 'Technical 2D CAD Floor Plan Blueprint',
+        category: '2d-blueprint',
+        url: '/renders/sample-2d-cad.jpg',
+        caption: 'Efficient 2D CAD architectural plan with dimension lines and room zones.',
+        roomTags: ['CAD Plan', 'Wall Layout']
+      },
+      {
+        id: 'rg-c-4',
+        title: 'Urban Facade & Clean Geometries',
+        category: 'exterior-3d',
+        url: 'https://images.unsplash.com/photo-1600585154526-990dced4db0d?auto=format&fit=crop&w=1000&q=80',
+        caption: 'Engineered contemporary facade prioritizing thermal mass efficiency.',
+        roomTags: ['Minimalist Facade', 'Street Elevation']
+      }
     ],
     floorsCount: 2,
     floorsLabel: 'Ground + 1 Floor + Utility Roof',

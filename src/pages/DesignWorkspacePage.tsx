@@ -27,6 +27,7 @@ import { SvgFloorPlan } from '../components/floor-plan/SvgFloorPlan';
 import { ThreeDConceptViewer } from '../components/three-d-viewer/ThreeDConceptViewer';
 import { CostEstimatorView } from '../components/cost-estimator/CostEstimatorView';
 import { AiRefinementChat } from '../components/chat/AiRefinementChat';
+import { PlanTo3DConverterModal } from '../components/three-d-viewer/PlanTo3DConverterModal';
 
 type WorkspaceTab = 'overview' | 'plan' | '3d' | 'chat' | 'cost';
 
@@ -39,6 +40,7 @@ export const DesignWorkspacePage: React.FC = () => {
   const [allDesigns, setAllDesigns] = useState<DesignConcept[]>([]);
   const [design, setDesign] = useState<DesignConcept | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
+  const [isUpload2DModalOpen, setIsUpload2DModalOpen] = useState<boolean>(false);
 
   // Tab state (defaults to 'overview', or respects ?tab= URL param)
   const activeTab = (searchParams.get('tab') as WorkspaceTab) || 'overview';
@@ -139,6 +141,14 @@ export const DesignWorkspacePage: React.FC = () => {
 
           {/* Quick Actions & Export Button */}
           <div className="flex items-center gap-2">
+            <button
+              onClick={() => setIsUpload2DModalOpen(true)}
+              className="px-3 py-1.5 rounded-lg bg-olive-700 hover:bg-olive-800 text-white text-xs font-semibold flex items-center gap-1.5 shadow-sm transition-all"
+            >
+              <Sparkles className="w-3.5 h-3.5 text-amber-300" />
+              <span>Upload 2D Plan → AI 3D</span>
+            </button>
+
             <Link
               to={`/projects/${project.id}/designs`}
               className="px-3 py-1.5 rounded-lg border border-stone-300 hover:bg-stone-50 text-xs font-semibold text-stone-700 transition-colors hidden sm:inline-block"
@@ -148,7 +158,7 @@ export const DesignWorkspacePage: React.FC = () => {
 
             <Link
               to={`/projects/${project.id}/export`}
-              className="px-4 py-1.5 rounded-lg bg-olive-700 hover:bg-olive-800 text-white text-xs font-semibold flex items-center gap-1.5 shadow-sm transition-all"
+              className="px-4 py-1.5 rounded-lg bg-charcoal-900 hover:bg-charcoal-800 text-white text-xs font-semibold flex items-center gap-1.5 shadow-sm transition-all"
             >
               <Download className="w-3.5 h-3.5" />
               <span>Export Package</span>
@@ -161,7 +171,7 @@ export const DesignWorkspacePage: React.FC = () => {
           {[
             { id: 'overview', label: 'Concept Overview', icon: Compass },
             { id: 'plan', label: '2D Floor Plan (SVG)', icon: Layers },
-            { id: '3d', label: '3D Massing Viewer', icon: Box },
+            { id: '3d', label: '3D Studio & Cutaways', icon: Box, badge: 'HD 3D' },
             { id: 'chat', label: 'AI Refinement Chat', icon: MessageSquare, badge: 'Live Demo' },
             { id: 'cost', label: 'Construction Estimate', icon: IndianRupee }
           ].map((tab) => {
@@ -279,21 +289,99 @@ export const DesignWorkspacePage: React.FC = () => {
                 </div>
 
                 {/* Action buttons */}
-                <div className="grid grid-cols-2 gap-2 text-xs">
+                <div className="grid grid-cols-3 gap-2 text-xs">
+                  <button
+                    onClick={() => setActiveTab('3d')}
+                    className="py-2 px-2 rounded-lg bg-olive-700 hover:bg-olive-800 text-white font-semibold flex items-center justify-center gap-1.5 shadow-sm transition-all"
+                  >
+                    <Box className="w-3.5 h-3.5 text-amber-300" />
+                    <span>HD 3D Studio</span>
+                  </button>
                   <button
                     onClick={() => setActiveTab('plan')}
-                    className="py-2 px-3 rounded-lg bg-charcoal-900 hover:bg-charcoal-800 text-white font-semibold flex items-center justify-center gap-1.5 shadow-sm transition-all"
+                    className="py-2 px-2 rounded-lg bg-charcoal-900 hover:bg-charcoal-800 text-white font-semibold flex items-center justify-center gap-1.5 shadow-sm transition-all"
                   >
                     <Layers className="w-3.5 h-3.5" />
-                    <span>View Floor Plan</span>
+                    <span>2D Vector Plan</span>
                   </button>
                   <button
                     onClick={() => setActiveTab('chat')}
-                    className="py-2 px-3 rounded-lg border border-stone-300 hover:bg-stone-50 text-stone-800 font-semibold flex items-center justify-center gap-1.5 transition-colors"
+                    className="py-2 px-2 rounded-lg border border-stone-300 hover:bg-stone-50 text-stone-800 font-semibold flex items-center justify-center gap-1.5 transition-colors"
                   >
                     <MessageSquare className="w-3.5 h-3.5 text-olive-700" />
-                    <span>Refine with AI</span>
+                    <span>Refine AI</span>
                   </button>
+                </div>
+              </div>
+            </div>
+
+            {/* 3D Cutaway & 2D Blueprint Sync Spotlight Banner */}
+            <div className="bg-gradient-to-r from-stone-900 via-charcoal-950 to-stone-900 rounded-2xl p-5 border border-stone-800 shadow-xl text-white grid grid-cols-1 md:grid-cols-12 gap-5 items-center">
+              <div className="md:col-span-7 space-y-2">
+                <div className="flex items-center gap-2">
+                  <span className="px-2 py-0.5 rounded text-[10px] font-mono font-bold bg-amber-400 text-charcoal-950 uppercase tracking-wider">
+                    New HD Visualization
+                  </span>
+                  <span className="text-stone-400 text-xs font-mono">Top-Down Interior Cutaways</span>
+                </div>
+                <h3 className="font-serif text-lg font-bold text-white">
+                  Inspect HD 3D Cutaway Floor Plan &amp; Synchronized CAD Blueprints
+                </h3>
+                <p className="text-xs text-stone-300 leading-relaxed">
+                  Clear top-down perspective showing bedroom layout, modular kitchen island, dining core, and balcony landscape. Also supports uploading your own 2D blueprints to generate 3D models!
+                </p>
+                <div className="flex items-center gap-3 pt-2">
+                  <button
+                    onClick={() => setActiveTab('3d')}
+                    className="px-4 py-2 rounded-lg bg-olive-600 hover:bg-olive-500 text-white font-semibold text-xs flex items-center gap-1.5 shadow-md transition-all"
+                  >
+                    <Box className="w-3.5 h-3.5 text-amber-300" />
+                    <span>Open 3D Cutaway Viewer</span>
+                  </button>
+                  <button
+                    onClick={() => setIsUpload2DModalOpen(true)}
+                    className="px-4 py-2 rounded-lg bg-stone-800 hover:bg-stone-700 text-stone-200 border border-stone-700 font-semibold text-xs flex items-center gap-1.5 transition-colors"
+                  >
+                    <Sparkles className="w-3.5 h-3.5 text-amber-300" />
+                    <span>Upload 2D Blueprint</span>
+                  </button>
+                </div>
+              </div>
+
+              {/* Mini visual preview cards */}
+              <div className="md:col-span-5 grid grid-cols-2 gap-2.5">
+                <div
+                  onClick={() => setActiveTab('3d')}
+                  className="rounded-xl overflow-hidden border border-stone-700 bg-stone-800 cursor-pointer hover:border-amber-400 transition-all group"
+                >
+                  <div className="h-28 relative">
+                    <img
+                      src={design.isometricCutawayImage || '/renders/concept-a-cutaway.jpg'}
+                      alt="3D Cutaway"
+                      className="w-full h-full object-cover group-hover:scale-105 transition-transform"
+                    />
+                    <div className="absolute inset-0 bg-black/25"></div>
+                    <span className="absolute bottom-1.5 left-1.5 text-[9px] font-mono font-bold bg-black/75 px-1.5 py-0.5 rounded text-white">
+                      3D Cutaway Top View
+                    </span>
+                  </div>
+                </div>
+
+                <div
+                  onClick={() => setActiveTab('3d')}
+                  className="rounded-xl overflow-hidden border border-stone-700 bg-stone-800 cursor-pointer hover:border-blue-400 transition-all group"
+                >
+                  <div className="h-28 relative">
+                    <img
+                      src={design.splitSyncImage || '/renders/concept-a-split.png'}
+                      alt="Split CAD"
+                      className="w-full h-full object-cover group-hover:scale-105 transition-transform"
+                    />
+                    <div className="absolute inset-0 bg-black/25"></div>
+                    <span className="absolute bottom-1.5 left-1.5 text-[9px] font-mono font-bold bg-black/75 px-1.5 py-0.5 rounded text-white">
+                      2D/3D Split Sync
+                    </span>
+                  </div>
                 </div>
               </div>
             </div>
@@ -371,7 +459,10 @@ export const DesignWorkspacePage: React.FC = () => {
         {/* ================= TAB 2: 2D FLOOR PLAN ================= */}
         {activeTab === 'plan' && (
           <div className="space-y-6 animate-fadeIn">
-            <SvgFloorPlan design={design} />
+            <SvgFloorPlan
+              design={design}
+              onNavigateTo3D={() => setActiveTab('3d')}
+            />
           </div>
         )}
 
@@ -381,6 +472,7 @@ export const DesignWorkspacePage: React.FC = () => {
             <ThreeDConceptViewer
               design={design}
               onNavigateToTab={(tab) => setActiveTab(tab as WorkspaceTab)}
+              onDesignUpdated={handleDesignUpdated}
             />
           </div>
         )}
@@ -462,6 +554,17 @@ export const DesignWorkspacePage: React.FC = () => {
           </div>
         )}
       </div>
+
+      {/* 2D-to-3D Plan Upload Converter Modal */}
+      <PlanTo3DConverterModal
+        isOpen={isUpload2DModalOpen}
+        onClose={() => setIsUpload2DModalOpen(false)}
+        projectId={project.id}
+        onDesignCreated={(newDesign) => {
+          handleDesignUpdated(newDesign);
+          navigate(`/projects/${project.id}/designs/${newDesign.id}?tab=3d`);
+        }}
+      />
     </div>
   );
 };

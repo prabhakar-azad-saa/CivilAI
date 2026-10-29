@@ -18,6 +18,7 @@ import { DesignConcept } from '../types/design';
 import { MockProjectService } from '../services/mockProjectService';
 import { MockDesignService } from '../services/mockDesignService';
 import { MockCostService } from '../services/mockCostService';
+import { PlanTo3DConverterModal } from '../components/three-d-viewer/PlanTo3DConverterModal';
 
 export const DesignAlternativesPage: React.FC = () => {
   const { id } = useParams<{ id: string }>();
@@ -28,6 +29,8 @@ export const DesignAlternativesPage: React.FC = () => {
   const [selectedDesignId, setSelectedDesignId] = useState<string>('');
   const [loading, setLoading] = useState<boolean>(true);
   const [showComparisonMatrix, setShowComparisonMatrix] = useState<boolean>(false);
+  const [isUpload2DOpen, setIsUpload2DOpen] = useState<boolean>(false);
+  const [activeCardPreviewMode, setActiveCardPreviewMode] = useState<Record<string, 'facade' | 'cutaway'>>({});
 
   useEffect(() => {
     async function load() {
@@ -83,6 +86,14 @@ export const DesignAlternativesPage: React.FC = () => {
           </div>
 
           <div className="flex items-center gap-2">
+            <button
+              onClick={() => setIsUpload2DOpen(true)}
+              className="px-3 py-1.5 rounded-lg bg-olive-700 hover:bg-olive-800 text-white text-xs font-semibold flex items-center gap-1.5 shadow-sm transition-all"
+            >
+              <Sparkles className="w-3.5 h-3.5 text-amber-300" />
+              <span>Upload 2D Plan → AI 3D</span>
+            </button>
+
             <button
               onClick={() => setShowComparisonMatrix(!showComparisonMatrix)}
               className={`px-3 py-1.5 rounded-lg text-xs font-semibold border flex items-center gap-1.5 transition-all ${
@@ -242,10 +253,14 @@ export const DesignAlternativesPage: React.FC = () => {
                       : 'border-stone-200 hover:border-stone-300'
                   }`}
                 >
-                  {/* Card Cover Image with architectural badge */}
+                  {/* Card Cover Image with architectural badge & view toggle */}
                   <div className="relative h-56 bg-stone-100 overflow-hidden group">
                     <img
-                      src={d.coverImage}
+                      src={
+                        activeCardPreviewMode[d.id] === 'cutaway' && d.isometricCutawayImage
+                          ? d.isometricCutawayImage
+                          : d.coverImage
+                      }
                       alt={d.title}
                       className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
                       onError={(e) => {
@@ -258,6 +273,40 @@ export const DesignAlternativesPage: React.FC = () => {
                     <div className="absolute top-3 left-3 bg-white/95 backdrop-blur-sm px-2.5 py-1 rounded-md text-xs font-mono font-bold text-charcoal-900 shadow-sm">
                       Concept {d.codeName}
                     </div>
+
+                    {/* Quick Facade vs 3D Cutaway Toggle */}
+                    {d.isometricCutawayImage && (
+                      <div className="absolute top-3 left-28 z-10 flex items-center bg-black/60 backdrop-blur-sm rounded-lg p-0.5 border border-white/20 text-[10px]">
+                        <button
+                          type="button"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            setActiveCardPreviewMode((prev) => ({ ...prev, [d.id]: 'facade' }));
+                          }}
+                          className={`px-2 py-0.5 rounded font-semibold transition-colors ${
+                            activeCardPreviewMode[d.id] !== 'cutaway'
+                              ? 'bg-white text-charcoal-900 shadow-sm'
+                              : 'text-stone-300 hover:text-white'
+                          }`}
+                        >
+                          Facade
+                        </button>
+                        <button
+                          type="button"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            setActiveCardPreviewMode((prev) => ({ ...prev, [d.id]: 'cutaway' }));
+                          }}
+                          className={`px-2 py-0.5 rounded font-semibold transition-colors ${
+                            activeCardPreviewMode[d.id] === 'cutaway'
+                              ? 'bg-amber-400 text-charcoal-950 font-bold shadow-sm'
+                              : 'text-stone-300 hover:text-white'
+                          }`}
+                        >
+                          3D Cutaway
+                        </button>
+                      </div>
+                    )}
 
                     {/* Vastu Badge */}
                     <div className="absolute top-3 right-3 bg-emerald-900/90 text-emerald-100 text-[11px] font-mono font-bold px-2.5 py-1 rounded backdrop-blur-sm">
@@ -370,6 +419,19 @@ export const DesignAlternativesPage: React.FC = () => {
           </p>
         </div>
       </div>
+
+      {/* Plan to 3D Converter Modal */}
+      {project && (
+        <PlanTo3DConverterModal
+          isOpen={isUpload2DOpen}
+          onClose={() => setIsUpload2DOpen(false)}
+          projectId={project.id}
+          onDesignCreated={(newDesign) => {
+            setDesigns((prev) => [newDesign, ...prev]);
+            navigate(`/projects/${project.id}/designs/${newDesign.id}?tab=3d`);
+          }}
+        />
+      )}
     </div>
   );
 };
